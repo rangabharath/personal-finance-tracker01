@@ -1,0 +1,46 @@
+pip install pandas matplotlib
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Define the columns for our expenses DataFrame
+columns = ['Date', 'Category', 'Amount']
+
+# Create an empty DataFrame
+df = pd.DataFrame(columns=columns)
+
+# Function to add an expense
+def add_expense(date, category, amount):
+    global df
+    new_expense = pd.DataFrame([[date, category, amount]], columns=columns)
+    df = pd.concat([df, new_expense], ignore_index=True)
+
+# Function to view all expenses
+def view_expenses():
+    global df
+    print(df)
+
+# Function to plot expenses by category
+def plot_expenses():
+    global df
+    if df.empty:
+        print("No data to plot.")
+        return
+    category_totals = df.groupby('Category')['Amount'].sum()
+    category_totals.plot(kind='bar')
+    plt.title('Expenses by Category')
+    plt.xlabel('Category')
+    plt.ylabel('Amount')
+    plt.show()
+
+# Example usage
+if __name__ == "__main__":
+    add_expense('2024-08-01', 'Food', 15.50)
+    add_expense('2024-08-02', 'Transport', 40.00)
+    add_expense('2024-08-03', 'Entertainment', 60.00)
+    add_expense('2024-08-04', 'Food', 22.00)
+
+    print("All Expenses:")
+    view_expenses()
+
+    print("Plotting Expenses...")
+    plot_expenses()
